@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import <Firebase.h>
 
 @implementation AppDelegate
 
@@ -16,6 +17,8 @@
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
+    [FIRApp configure];
+
   return [self getBundleURL];
 }
 
