@@ -1,5 +1,7 @@
 import { Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import 'react-native-gesture-handler';
+import {getFcmToken, registerListenerWithFCM} from '../src/utils/fcmHelper';
 
 import {
   GoogleSignin,
@@ -79,6 +81,14 @@ export default RegisterScreen = ({navigation})=>{
           }
         }
       };
+      useEffect(() => {
+        getFcmToken();
+      }, []);
+    
+      useEffect(() => {
+        const unsubscribe = registerListenerWithFCM();
+        return unsubscribe;
+      }, []);
     return (
         
         <SafeAreaView>

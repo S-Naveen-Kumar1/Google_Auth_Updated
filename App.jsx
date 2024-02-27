@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View,Text, TextInput, Button, TouchableOpacity, FlatList, SafeAreaView, Switch, StyleSheet, SectionList, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Products } from "./Components/Products";
+
  const App = () =>{
     const [value,setValue]=useState("")
     const [todoArray,setTodoArray]=useState([])
@@ -11,46 +12,10 @@ import { Products } from "./Components/Products";
     const [movies,setMovies] = useState([])
     const [isLoading,setIsLoading] = useState(true)
     console.log("itemem4=====",todoArray)
-    // useEffect(()=>{
-    //    const data=   AsyncStorage.getItem('item')
-    //    console.log("datadata----",data)
-    // },[])
-    const onChange = (e) =>{
-        setValue(e)
+   
+  
 
-    }
-    const onPressSubmit = () =>{
-        // let value={item:value,id:Math.random()}
-        setTodoArray([...todoArray,value])
-        setValue("")
-        AsyncStorage.setItem("item",JSON.stringify(todoArray))
-
-    }
-    const onSearch = () =>{
-        setTodoArray([])
-        todoArray.filter((el)=>{
-            if(el.toLowerCase()== value.toLowerCase())
-            setTodoArray([value])
-        })
-
-    }
-
-    const toggleSwitch = ()=>{
-        setIsSet(prev=>!prev)
-    }
-
-    const handleIncrement = ()=>{
-        setCount(previousState=>previousState+1)
-    }
-
-    const handleDecrement = ()=>{
-        setCount(previousState=>previousState-1)
-    }
-
-    const handleReset = ()=>{
-        setCount(0)
-    }
-
+    
     const productList = [
         {name:'product1',detail:'detail1'},
         {name:'product1',detail:'detail1'},
@@ -79,7 +44,7 @@ import { Products } from "./Components/Products";
     },[])
 
     // {console.log(movies)}
-
+    
     return (
         <SafeAreaView>
            
