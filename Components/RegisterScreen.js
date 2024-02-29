@@ -8,6 +8,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 GoogleSignin.configure({
   webClientId:
@@ -18,6 +19,7 @@ GoogleSignin.configure({
 
 export default RegisterScreen = ({navigation})=>{
     const [user, setUserInfo] = useState(null)
+    const [token,setToken]=useState("")
     const [inputs,setInputs] = useState({
         email: "",
         password: "",
@@ -83,15 +85,24 @@ export default RegisterScreen = ({navigation})=>{
       };
       useEffect(() => {
         getFcmToken();
+        const getToken=async ()=>{
+
+          let token=await AsyncStorage.getItem("token")
+          setToken(token)
+        }
+        getToken()
       }, []);
-    
+      
       useEffect(() => {
-        const unsubscribe = registerListenerWithFCM();
+        // console.log(navigation,"abc")
+        const unsubscribe = registerListenerWithFCM(navigation);
         return unsubscribe;
       }, []);
-    return (
+
+      return (
         
         <SafeAreaView>
+          {/* <Text >Token</Text> */}
             <View style={styles.view}>
                 <Text style={styles.text}>Email Id</Text>
                 <TextInput style={styles.input} name={'email'} value={inputs.email} onChangeText={(text)=>handleChange('email',text)}></TextInput>
@@ -117,6 +128,7 @@ export default RegisterScreen = ({navigation})=>{
         color={GoogleSigninButton.Color.Light}
         onPress={signIn}
       />
+
     </View>
             
         </SafeAreaView>
@@ -166,5 +178,8 @@ const styles = StyleSheet.create({
         width: 192,
         height: 48,
         marginTop: 20,
+        padding:20,
+        borderRadius:20,
+        fontSize:20
       },
 })

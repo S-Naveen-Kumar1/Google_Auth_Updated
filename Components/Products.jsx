@@ -6,7 +6,7 @@ import { ProductsCard } from './ProductsCard';
 
 export const Products = () => {
     const [text, onChangeText] = useState('');
-    const [category, setCategory] = useState(); 
+    const [category, setCategory] = useState();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -54,6 +54,7 @@ export const Products = () => {
                 style={styles.picker}
                 onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
             >
+                <Picker.Item label="Select ALL" value="" />
                 <Picker.Item label="Electronics" value="electronics" />
                 <Picker.Item label="Clothes" value="clothes" />
             </Picker>

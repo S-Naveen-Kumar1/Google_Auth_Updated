@@ -10,6 +10,7 @@ import CameraScreenPage from './CameraScreen';
 import ScoreCardScreen from './ScoreCardScreen';
 import RegisterScreen from './RegisterScreen';
 import { Products } from './Products';
+import { registerListenerWithFCM } from '../src/utils/fcmHelper';
 
 const Stack = createNativeStackNavigator()
 
@@ -56,6 +57,7 @@ const NavigationApp = ()=>{
        
         >
         </Stack.Screen>
+    
     </Stack.Navigator>
 
 </NavigationContainer>

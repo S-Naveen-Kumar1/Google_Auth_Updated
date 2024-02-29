@@ -1,7 +1,10 @@
 import notifee, {EventType} from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import {PERMISSIONS, request} from 'react-native-permissions';
 //method was called to get FCM token for notification
+
 export const getFcmToken = async () => {
   let token = null;
   await checkApplicationNotificationPermission();
@@ -9,6 +12,11 @@ export const getFcmToken = async () => {
   try {
     token = await messaging().getToken();
     console.log('getFcmToken-->', token);
+   axios.post(`http://localhost:8080/fcm`,{fcmToken:token})
+   .then(res=>{
+    console.log(res.data)
+   })
+
   } catch (error) {
     console.log('getFcmToken Device Token error ', error);
   }
@@ -76,7 +84,8 @@ export const checkApplicationNotificationPermission = async () => {
 };
 
 //method was called to listener events from firebase for notification triger
-export function registerListenerWithFCM() {
+export function registerListenerWithFCM(navigation) {
+  // console.log(navigation,"nav")
   const unsubscribe = messaging().onMessage(async remoteMessage => {
     console.log('onMessage Received : ', JSON.stringify(remoteMessage));
     if (
@@ -96,12 +105,16 @@ export function registerListenerWithFCM() {
         console.log('User dismissed notification', detail.notification);
         break;
       case EventType.PRESS:
-        console.log('User pressed notification', detail.notification);
+        console.log('User pressed notification', detail.notification.data);
         // if (detail?.notification?.data?.clickAction) {
         //   onNotificationClickActionHandling(
         //     detail.notification.data.clickAction
         //   );
         // }
+        if(detail.notification){
+console.log("dashboard")
+navigation.navigate(detail.notification.data.screen)
+        }
         break;
     }
   });
@@ -111,6 +124,7 @@ export function registerListenerWithFCM() {
       'onNotificationOpenedApp Received',
       JSON.stringify(remoteMessage),
     );
+    console.log("open")
     // if (remoteMessage?.data?.clickAction) {
     //   onNotificationClickActionHandling(remoteMessage.data.clickAction);
     // }
@@ -132,7 +146,7 @@ export function registerListenerWithFCM() {
 
 //method was called to display notification
 async function onDisplayNotification(title, body, data) {
-  console.log('onDisplayNotification Adnan: ', JSON.stringify(data));
+  console.log('onDisplayNotification ', JSON.stringify(data));
 
   // Request permissions (required for iOS)
   await notifee.requestPermission();

@@ -47,67 +47,6 @@ import { Products } from "./Components/Products";
     
     return (
         <SafeAreaView>
-           
-        <View >
-            <Text style={{textAlign:'center'}}>Counter</Text>
-            <Text>Count: {count}</Text>
-            {/* <Text>{isSet.toString()}</Text> */}
-            <TouchableOpacity style={[styles.button,{backgroundColor:'red'}]} onPress={handleIncrement}>
-                <Text>Increment</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button,{backgroundColor:'skyblue'}]} onPress={handleDecrement}>
-                <Text>Decrement</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleReset}>
-                <Text>Reset</Text>
-            </TouchableOpacity>
-        </View>
-        {/* <View>
-            <FlatList
-            data={productList}
-            renderItem={({item})=>
-            <View style={{padding:4,backgroundColor:'lightgrey',margin:4}}> 
-                <Text style={styles.text} >{item.name}</Text>
-                <Text style={styles.text} >{item.detail}</Text>
-            </View>}
-            >
-            </FlatList>
-           
-        </View> */}
-        {/* <SectionList
-         sections={[
-            {title: 'D', data: ['Devin', 'Dan', 'Dominic']},
-            {
-              title: 'J',
-              data: [
-                'Jackson',
-                'James',
-                'Jillian',
-                'Jimmy',
-                'Joel',
-                'John',
-                'Julie',
-              ],
-            },
-          ]}
-          renderItem={({item})=>
-          <Text>{item}</Text>
-        }
-        renderSectionHeader={({section})=><Text>
-            {section.title}
-        </Text>}
-        >
-
-        </SectionList> */}
-        <View>
-       {isLoading?<ActivityIndicator/>:<FlatList data={movies} renderItem={({item})=>
-       <View>
-       <Text>{item.title}</Text>
-       <Text>{item.releaseYear}</Text>
-       </View>}>
-       </FlatList>
-    }
-       </View>
         </SafeAreaView>
     )
 }
