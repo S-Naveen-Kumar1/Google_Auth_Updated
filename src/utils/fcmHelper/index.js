@@ -7,13 +7,16 @@ import {PERMISSIONS, request} from 'react-native-permissions';
 
 export const getFcmToken = async () => {
   let token = null;
-  await checkApplicationNotificationPermission();
+  // await checkApplicationNotificationPermission();
   await registerAppWithFCM();
   try {
     token = await messaging().getToken();
     console.log('getFcmToken-->', token);
-   axios.post(`http://localhost:8080/fcm`,{fcmToken:token})
+   axios.post(`https://dummy-server-ipe7.onrender.com/fcmNaveen`,{fcmToken:token})
+  //  axios.post(`https://dummy-server-updated.onrender.com/fcm`,{fcmToken:token})
+
    .then(res=>{
+     console.log("fcm naveen")
     console.log(res.data)
    })
 
