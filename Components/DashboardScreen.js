@@ -5,22 +5,14 @@ import { Alert, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableHigh
 import { faCamera } from '@fortawesome/free-solid-svg-icons/faCamera'
 import { faSquarePollHorizontal } from "@fortawesome/free-solid-svg-icons/faSquarePollHorizontal"
 import { faFileArrowUp } from "@fortawesome/free-solid-svg-icons/faFileArrowUp"
+import { auth } from '@react-native-firebase/auth';
+import { facomments } from "@fortawesome/free-solid-svg-icons/faFileArrowUp"
 
 const DashboardScreen = ({ navigation, route }) => {
-console.log(route)
-    // const [data, setData] = useState("")
+    console.log(route)
+    const [senderId, setSenderId] = useState(null);
 
-    // const getStoredData = async () => {
-    //     const flag = JSON.parse(await AsyncStorage.getItem('flag'))
-    //     const profile = JSON.parse(await AsyncStorage.getItem('profile'))
-    //     setData(profile.name)
-    //     // console.log(flag, 'flag', profile, 'profile')
-    //     // console.log("heaeheaae", profile)
-    // }
-    // useEffect(() => {
-    //     getStoredData()
-    // }, [])
-    console.log(route,'line 23')
+    console.log(route, 'line 23')
     const handleLogout = () => {
         console.log('logout')
         Alert.alert('Are you sure you want to logout?', '', [
@@ -40,12 +32,25 @@ console.log(route)
         navigation.navigate('Camera')
     }
 
-    const getScoreCard = ()=>{
+    const getScoreCard = () => {
         navigation.navigate('Scores')
     }
 
-    const getProducts = ()=>{
+    const getProducts = () => {
         navigation.navigate('Products')
+    }
+    useEffect(() => {
+        const getCurrentUser = async () => {
+          const currentUser = auth().currentUser;
+          if (currentUser) {
+            setSenderId(currentUser.uid);
+          }
+        };
+    
+        getCurrentUser();
+      }, []);
+    const openChat = () => {
+        navigation.navigate('Chat',{ senderId })
     }
     return (
         <SafeAreaView>
@@ -55,36 +60,45 @@ console.log(route)
         style={styles.stretch}
         source={require({})}
       />               */}
-        <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                <TouchableOpacity style={styles.button} onPress={handleLogout}>
                     <Text style={styles.text}>Logout</Text>
                 </TouchableOpacity>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.flex}>
                     <TouchableHighlight underlayColor='transparent' onPress={clickSelfie}>
-                    <View style={[styles.card, { backgroundColor: 'mistyrose' }]} >
-                        <View style={styles.icon}>
-                            <FontAwesomeIcon icon={faCamera} size={25} style={{ color: "gray" }} />
+                        <View style={[styles.card, { backgroundColor: 'mistyrose' }]} >
+                            <View style={styles.icon}>
+                                <FontAwesomeIcon icon={faCamera} size={25} style={{ color: "gray" }} />
+                            </View>
+                            <Text>Take Selfie</Text>
                         </View>
-                        <Text>Take Selfie</Text>
-                    </View>
                     </TouchableHighlight>
                     <TouchableHighlight underlayColor='transparent' onPress={getScoreCard}>
-                    <View style={[styles.card, { backgroundColor: 'lightpink' }]} >
-                        <View style={styles.icon}>
-                            <FontAwesomeIcon icon={faSquarePollHorizontal} size={25} style={{color:'gray'}} />
+                        <View style={[styles.card, { backgroundColor: 'lightpink' }]} >
+                            <View style={styles.icon}>
+                                <FontAwesomeIcon icon={faSquarePollHorizontal} size={25} style={{ color: 'gray' }} />
+                            </View>
+                            <Text>ScoreCard</Text>
                         </View>
-                        <Text>ScoreCard</Text>
-                    </View>
                     </TouchableHighlight>
                     <TouchableHighlight underlayColor='transparent' onPress={getProducts}>
-                    <View style={[styles.card, { backgroundColor: '#CBC3E3' }]} >
-                    <View style={styles.icon}>
-                            <FontAwesomeIcon icon={faFileArrowUp} size={25} style={{color:'gray'}} />
+                        <View style={[styles.card, { backgroundColor: '#CBC3E3' }]} >
+                            <View style={styles.icon}>
+                                <FontAwesomeIcon icon={faFileArrowUp} size={25} style={{ color: 'gray' }} />
+                            </View>
+                            <Text>GetProducts</Text>
                         </View>
-                        <Text>GetProducts</Text>
-                    </View>
                     </TouchableHighlight>
+                    <TouchableHighlight underlayColor='transparent' onPress={openChat}>
+                        <View style={[styles.card, { backgroundColor: '#CBC3E3' }]} >
+                            <View style={styles.icon}>
+                                <FontAwesomeIcon icon={facomments} size={25} style={{ color: 'gray' }} />
+                            </View>
+                            <Text>Open Chat App</Text>
+                        </View>
+                    </TouchableHighlight>
+                   
                 </View>
             </ScrollView>
 
