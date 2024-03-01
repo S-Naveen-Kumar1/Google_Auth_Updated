@@ -11,59 +11,65 @@ import ScoreCardScreen from './ScoreCardScreen';
 import RegisterScreen from './RegisterScreen';
 import { Products } from './Products';
 import { registerListenerWithFCM } from '../src/utils/fcmHelper';
+import ChatScreen from './ChatScreen';
 
 const Stack = createNativeStackNavigator()
 
-const NavigationApp = ()=>{
+const NavigationApp = () => {
 
-   return (
-    <NavigationContainer >
-    <Stack.Navigator initialRouteName='Splash' >
-        <Stack.Screen
-        name= 'Splash'
-        component={Splash}
-        options={{title:'',headerShown:false}}
-        ></Stack.Screen>
-        <Stack.Screen
-        name= 'Register'
-        component={RegisterScreen}
-        options={{ title: 'Register',headerLeft: () => <Text></Text> }}
-        >
-            
-        </Stack.Screen>
-        <Stack.Screen
-        name= 'Login'
-        component={LoginScreen}
-        options={{ title: 'Login',}}
-        >
-        </Stack.Screen>
-        <Stack.Screen
-        name= 'Dashboard'
-        component={DashboardScreen}
-        options={{ title: 'Dashboard',headerLeft: () => <Text></Text>}}
-        >
-        </Stack.Screen>
-        <Stack.Screen
-        name= 'Camera'
-        component={CameraScreenPage}
-        options={{ title: ''}}
-        >
-        </Stack.Screen>
-        <Stack.Screen 
-        name="Scores" component={ScoreCardScreen} />
-        <Stack.Screen
-        name= 'Products'
-        component={Products}
-       
-        >
-        </Stack.Screen>
-    
-    </Stack.Navigator>
+    return (
+        <NavigationContainer >
+            <Stack.Navigator initialRouteName='Splash' >
+                <Stack.Screen
+                    name='Splash'
+                    component={Splash}
+                    options={{ title: '', headerShown: false }}
+                ></Stack.Screen>
+                <Stack.Screen
+                    name='Register'
+                    component={RegisterScreen}
+                    options={{ title: 'Register', headerLeft: () => <Text></Text> }}
+                >
 
-</NavigationContainer>
-   )
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Login'
+                    component={LoginScreen}
+                    options={{ title: 'Login', }}
+                >
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Dashboard'
+                    component={DashboardScreen}
+                    options={{ title: 'Dashboard', headerLeft: () => <Text></Text> }}
+                >
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Camera'
+                    component={CameraScreenPage}
+                    options={{ title: '' }}
+                >
+                </Stack.Screen>
+                <Stack.Screen
+                    name="Scores" component={ScoreCardScreen} />
+                <Stack.Screen
+                    name='Products'
+                    component={Products}
+
+                >
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Chat'
+                    component={ChatScreen}
+
+                >
+                </Stack.Screen>
+            </Stack.Navigator>
+
+        </NavigationContainer>
+    )
 }
 
 export default NavigationApp;
-     
+
 
