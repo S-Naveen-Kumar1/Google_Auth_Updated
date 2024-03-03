@@ -14,6 +14,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import database from '@react-native-firebase/database';
 
 GoogleSignin.configure({
   webClientId:
@@ -101,6 +102,34 @@ const LoginScreen = ({navigation}) => {
       //     Alert.alert('Wrong Credentials!')
       // }
     }
+
+    database()
+  .ref('users')
+  .orderByChild("email")
+  .equalTo(email)
+  .once('value')
+
+  .then(snapshot => {
+    if (snapshot.exists()) {
+      let userData = Object.values(snapshot.val())[0];
+      console.log(userData, "userdata");
+      
+      // Use an async IIFE to handle async operations
+      (async () => {
+        try {
+          
+          await AsyncStorage.setItem("Chatusers", JSON.stringify(userData)); // Ensure userData is a string
+          const data = await AsyncStorage.getItem("Chatusers");
+          console.log(JSON.parse(data), "userdata1"); // Parse the string back to an object
+          console.log("snap");
+        } catch (error) {
+          console.error("AsyncStorage error: ", error);
+        }
+      })();
+    } else {
+      console.log("No data available");
+    }
+  })
   };
 
   const signIn = async () => {

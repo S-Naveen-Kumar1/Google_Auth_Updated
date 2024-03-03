@@ -50,7 +50,7 @@ const DashboardScreen = ({ navigation, route }) => {
         getCurrentUser();
       }, []);
     const openChat = () => {
-        navigation.navigate('Chat',{ senderId })
+        navigation.navigate('Chat')
     }
     return (
         <SafeAreaView>

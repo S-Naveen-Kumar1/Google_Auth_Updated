@@ -12,6 +12,7 @@ import RegisterScreen from './RegisterScreen';
 import { Products } from './Products';
 import { registerListenerWithFCM } from '../src/utils/fcmHelper';
 import ChatScreen from './ChatScreen';
+import Allusers from './AllUsers';
 
 const Stack = createNativeStackNavigator()
 
@@ -60,8 +61,13 @@ const NavigationApp = () => {
                 </Stack.Screen>
                 <Stack.Screen
                     name='Chat'
-                    component={ChatScreen}
+                    component={Allusers}
 
+                >
+                </Stack.Screen>
+                <Stack.Screen
+                    name='ChatScreen'
+                    component={ChatScreen}
                 >
                 </Stack.Screen>
             </Stack.Navigator>

@@ -2,6 +2,8 @@ import { Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, Vie
 import React, { useEffect, useState } from 'react';
 import 'react-native-gesture-handler';
 import { getFcmToken, registerListenerWithFCM } from '../src/utils/fcmHelper';
+import database from '@react-native-firebase/database';
+import uuid from 'react-native-uuid';
 
 import {
   GoogleSignin,
@@ -57,75 +59,97 @@ export default RegisterScreen = ({ navigation }) => {
     catch (err) {
       console.log(err)
     }
+    let data = {
+      id: uuid.v4(),
+      name: inputs.name,
+      email: inputs.email,
+      password: inputs.password,
+      img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbyHZ4yjBXpnnG01YecWfbRFKuukNxlmYE4wRGg5I0jaj6StK0BLJ2SaQ-jcUXT_dAlmo&usqp=CAU",
+      about:`hello  ${inputs.name} here`
+    }
+    database()
+      .ref('/users/' + data.id)
+      .set(data)
+      .on(
+        'value',
+        snapshot => console.log('snapshot', snapshot?.val()),
+        error => console.log('error', error) // <== comment out this line, and error goes away
+      )
+      .then(() => console.log('Data set.'))
+      .catch((err) => console.log(err))
   }
 
-  const getFcmToken1 = async () => {
-    let token = null;
-    console.log("hello")
-    await checkApplicationNotificationPermission();
-    await registerAppWithFCM();
-    try {
-      token = await messaging().getToken();
-      console.log('getFcmToken1-->', token);
-      setTok(token)
-      postFcmTokenToServer(token)
-      postFcmTokenToServer1(token)
-    } catch (error) {
-      console.log('getFcmToken Device Token error ', error);
-    }
+  // const getFcmToken1 = async () => {
+  //   let token = null;
+  //   console.log("hellonaveen")
+  //   // await checkApplicationNotificationPermission();
+  //   await registerAppWithFCM();
+  //   try {
+  //     token = await messaging().getToken();
+  //     console.log('getFcmToken1-->', token);
+  //     console.log("inside try")
+  //     setTok(token)
+  //     postFcmTokenToServer(token)
+  //     postFcmTokenToServer1(token)
+  //   } catch (error) {
+  //     console.log('getFcmToken Device Token error ', error);
+  //   }
 
-  };
+  // };
 
 
-  const postFcmTokenToServer = async (token) => {
+  // const postFcmTokenToServer = async (token) => {
 
-    try {
-      const response = await fetch(`https://dummy-server-ipe7.onrender.com/users/fcmtoken`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: inputs.email,
-          name: inputs.name,
-          fcmtoken: token,
-        }),
-      });
-      const data = await response.json()
-      console.log(data)
-      if (response.ok) {
-        console.log('FCM token posted successfully to the server');
-      } else {
-        console.error('Failed to post FCM token to the server');
-      }
-    } catch (error) {
-      console.error('Error posting FCM token to the server:', error);
-    }
-  };
+  //   try {
+  //     const response = await fetch(`https://dummy-server-ipe7.onrender.com/users/fcmtoken`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         email: inputs.email,
+  //         name: inputs.name,
+  //         fcmtoken: token,
+  //       }),
+  //     });
+  //     const data = await response.json()
+  //     console.log(data)
+  //     if (response.ok) {
+  //       console.log('FCM token posted successfully to the server');
+  //     } else {
+  //       console.error('Failed to post FCM token to the server');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error posting FCM token to the server:', error);
+  //   }
+  // };
 
-  React.useEffect(() => {
-    getFcmToken();
-    getFcmToken1()
+  // React.useEffect(() => {
+  //   getFcmToken();
+  //   getFcmToken1()
 
-  }, []);
+  // }, []);
+  useEffect(() => {
+    // getFcmToken1()
+    getFcmToken()
+  }, [])
 
   React.useEffect(() => {
     const unsubscribe = registerListenerWithFCM(navigation);
-    
+
     return unsubscribe;
   }, []);
 
-  
-const signIn = async () => {
+
+  const signIn = async () => {
     try {
       console.log('success');
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       setUserInfo(userInfo); // Update user info state
-      console.log("user",user, "navigate");
-    console.log(userInfo.user.name);
-    postFcmTokenToServer1(tok)
-    navigation.navigate('Dashboard', userInfo.user.name );
+      console.log("user", user, "navigate");
+      console.log(userInfo.user.name);
+      navigation.navigate('Dashboard', userInfo.user.name);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -139,41 +163,32 @@ const signIn = async () => {
     }
   };
 
-  useEffect(() => {
-    // This effect will be triggered when userInfo changes
-    if (user) {
-      console.log(user.name);
-      postFcmTokenToServer1(tok);
 
-      // Use the navigation object to navigate to 'Dashboard'
-    }
-  }, [user]);
-
-  const postFcmTokenToServer1 = async (token) => {
-    console.log("abc", user)
-    try {
-      const response = await fetch(`https://dummy-server-ipe7.onrender.com/users/fcmtoken`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email:user.user.email,
-          name:user.user.name,
-          fcmtoken: token,
-        }),
-      });
-      const data = await response.json()
-      console.log("aaaa",data)
-      if (response.ok) {
-        console.log('FCM token posted successfully to the server');
-      } else {
-        console.error('Failed to post FCM token to the server');
-      }
-    } catch (error) {
-      console.error('Error posting FCM token to the server:', error);
-    }
-  };
+  // const postFcmTokenToServer1 = async (token) => {
+  //   console.log("abc", user,token)
+  //   try {
+  //     const response = await fetch(`https://dummy-server-ipe7.onrender.com/users/fcmtoken`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         email:user.user.email,
+  //         name:user.user.name,
+  //         fcmtoken: token,
+  //       }),
+  //     });
+  //     const data = await response.json()
+  //     console.log("aaaa",data,token)
+  //     if (response.ok) {
+  //       console.log('FCM token posted successfully to the server');
+  //     } else {
+  //       console.error('Failed to post FCM token to the server');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error posting FCM token to the server:', error);
+  //   }
+  // };
 
   return (
 

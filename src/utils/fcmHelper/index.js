@@ -11,9 +11,9 @@ export const getFcmToken = async () => {
   await registerAppWithFCM();
   try {
     token = await messaging().getToken();
-    console.log('getFcmToken-->', token);
+    console.log('getFcmTokenNaveen-->', token);
    axios.post(`https://dummy-server-ipe7.onrender.com/fcmNaveen`,{fcmToken:token})
-  //  axios.post(`https://dummy-server-updated.onrender.com/fcm`,{fcmToken:token})
+  //  axios.post(`https://dummy-server-updated.onrender.com/fcm`,{fcmTokenNaveen:token})
 
    .then(res=>{
      console.log("fcm naveen")
