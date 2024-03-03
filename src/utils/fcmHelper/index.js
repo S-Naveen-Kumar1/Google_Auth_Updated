@@ -12,9 +12,7 @@ export const getFcmToken = async () => {
   try {
     token = await messaging().getToken();
     console.log('getFcmTokenNaveen-->', token);
-   axios.post(`https://dummy-server-ipe7.onrender.com/fcmNaveen`,{fcmToken:token})
-  //  axios.post(`https://dummy-server-updated.onrender.com/fcm`,{fcmTokenNaveen:token})
-
+   axios.post(`https://dummy-server-updated.onrender.com/fcmNaveen`,{fcmToken:token})
    .then(res=>{
      console.log("fcm naveen")
     console.log(res.data)
